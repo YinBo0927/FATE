@@ -2,16 +2,13 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from fate.config import load_yaml
-from fate.utils.io import read_jsonl
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="PFPO refinement entry point.")
-    parser.add_argument("--backend", choices=["mock", "hf"], default="mock")
     parser.add_argument("--config", required=True)
     parser.add_argument("--groups", required=True)
     parser.add_argument("--sft-checkpoint", required=True)
@@ -23,9 +20,6 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     config = load_yaml(args.config)
-    if args.backend == "mock":
-        _write_mock_checkpoint(args.output_dir, args.groups, args.sft_checkpoint)
-        return
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
     from fate.training.offline_pfpo import PFPOGroupDataset, train_offline_pfpo
@@ -78,22 +72,6 @@ def _load_causal_model(path: str, *, trust_remote_code: bool):
         except ImportError:
             pass
     return AutoModelForCausalLM.from_pretrained(path, trust_remote_code=trust_remote_code)
-
-
-def _write_mock_checkpoint(output_dir: str, groups_path: str, sft_checkpoint: str) -> None:
-    output = Path(output_dir)
-    output.mkdir(parents=True, exist_ok=True)
-    rows = read_jsonl(groups_path)
-    payload = {
-        "stage": "pfpo",
-        "backend": "mock",
-        "num_groups": len(rows),
-        "sft_checkpoint": sft_checkpoint,
-        "note": "This checkpoint is produced by the smoke pipeline and is not a model.",
-    }
-    with (output / "mock_checkpoint.json").open("w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2)
-    print(f"wrote mock PFPO checkpoint to {output}")
 
 
 if __name__ == "__main__":

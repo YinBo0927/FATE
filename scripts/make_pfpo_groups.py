@@ -5,14 +5,13 @@ import argparse
 
 from fate.agents.hf_policy import HFPolicyClient
 from fate.config import load_yaml
-from fate.mock import MockPolicyClient
 from fate.utils.io import read_jsonl, write_jsonl
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Sample grouped PFPO completions.")
-    parser.add_argument("--backend", choices=["mock", "hf"], default="mock")
     parser.add_argument("--config", required=True)
+    parser.add_argument("--model-name-or-path")
     parser.add_argument("--prompts", required=True)
     parser.add_argument("--output", required=True)
     return parser.parse_args()
@@ -23,15 +22,12 @@ def main() -> None:
     config = load_yaml(args.config)
     model_cfg = config["model"]
     gen_cfg = config["generation"]
-    if args.backend == "hf":
-        client = HFPolicyClient.from_pretrained(
-            name_or_path=model_cfg["name_or_path"],
-            torch_dtype=model_cfg.get("torch_dtype", "bfloat16"),
-            trust_remote_code=bool(model_cfg.get("trust_remote_code", True)),
-            attn_implementation=model_cfg.get("attn_implementation"),
-        )
-    else:
-        client = MockPolicyClient()
+    client = HFPolicyClient.from_pretrained(
+        name_or_path=args.model_name_or_path or model_cfg["name_or_path"],
+        torch_dtype=model_cfg.get("torch_dtype", "bfloat16"),
+        trust_remote_code=bool(model_cfg.get("trust_remote_code", True)),
+        attn_implementation=model_cfg.get("attn_implementation"),
+    )
     rows = read_jsonl(args.prompts)
     outputs = []
     batch_size = int(config["evolution"].get("proposal_batch_size", 4))

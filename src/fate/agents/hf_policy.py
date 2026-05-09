@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 import torch
@@ -33,7 +34,15 @@ class HFPolicyClient:
         if attn_implementation:
             kwargs["attn_implementation"] = attn_implementation
         tokenizer = AutoTokenizer.from_pretrained(name_or_path, trust_remote_code=trust_remote_code)
-        model = AutoModelForCausalLM.from_pretrained(name_or_path, **kwargs)
+        if (Path(name_or_path) / "adapter_config.json").exists():
+            try:
+                from peft import AutoPeftModelForCausalLM
+
+                model = AutoPeftModelForCausalLM.from_pretrained(name_or_path, **kwargs)
+            except ImportError:
+                model = AutoModelForCausalLM.from_pretrained(name_or_path, **kwargs)
+        else:
+            model = AutoModelForCausalLM.from_pretrained(name_or_path, **kwargs)
         if tokenizer.pad_token_id is None:
             tokenizer.pad_token = tokenizer.eos_token
         return cls(model=model, tokenizer=tokenizer)
@@ -73,4 +82,3 @@ class HFPolicyClient:
                 index += 1
             grouped.append(group)
         return grouped
-

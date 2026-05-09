@@ -20,45 +20,49 @@ pip install -r requirements.txt
 export PYTHONPATH=$PWD/src:${PYTHONPATH:-}
 ```
 
-## Step 3. Run Everything
+For GPU training, install the PyTorch build that matches your CUDA driver before running SFT or PFPO.
 
-Run the complete smoke pipeline with bundled sample data and mock model components.
+## Step 3. Download Datasets
+
+Download the external benchmark assets before running any experiment.
 
 ```bash
-bash scripts/run_all.sh
+python scripts/download_datasets.py \
+  --datasets agentharm atbench agentdojo \
+  --output-dir data/raw
 ```
 
-The full smoke run writes:
+## Step 4. Create Output Folders
 
-```text
-results/smoke_metrics.json
-```
-
-## Step 4. Run Step by Step
-
-Create output folders for intermediate artifacts and final metrics.
+Create folders for the first self-evolution round and evaluation outputs.
 
 ```bash
 mkdir -p artifacts/round_0 results
 ```
 
-Create a small local sample dataset that can run without external credentials.
+## Step 5. Run Benchmark Rollouts
 
-```bash
-python scripts/download_datasets.py \
-  --datasets sample \
-  --output-dir data/raw
+Run the current policy on the benchmark development split with the official benchmark runners and verifiers. Export the scored rollout records to:
+
+```text
+artifacts/round_0/dev_rollouts.scored.jsonl
 ```
 
-Convert the sample task records into verifier-scored failure trajectories.
+Each record must contain `task`, `trajectory`, `mode`, and verifier `scores`. See [docs/reproduction.md](docs/reproduction.md) for the JSONL schema.
+
+## Step 6. Collect Failures
+
+Filter the scored rollout file and keep trajectories that violate at least one objective.
 
 ```bash
 python scripts/collect_failures.py \
-  --tasks data/raw/sample/tasks.jsonl \
+  --rollouts artifacts/round_0/dev_rollouts.scored.jsonl \
   --output artifacts/round_0/failures.jsonl
 ```
 
-Build repair prompts from the failure trajectories and verifier feedback.
+## Step 7. Build Repair Prompts
+
+Build repair prompts from each failure trajectory and its verifier feedback.
 
 ```bash
 python scripts/make_repair_prompts.py \
@@ -66,23 +70,35 @@ python scripts/make_repair_prompts.py \
   --output artifacts/round_0/repair_prompts.jsonl
 ```
 
-Generate same-policy repair candidates with the mock policy backend.
+## Step 8. Generate Repairs
+
+Generate same-policy repair candidates with the configured Hugging Face model.
 
 ```bash
 python scripts/generate_repairs.py \
-  --backend mock \
   --config configs/qwen3_8b_fate.yaml \
+  --model-name-or-path Qwen/Qwen3-8B-Instruct \
   --prompts artifacts/round_0/repair_prompts.jsonl \
   --output artifacts/round_0/repair_candidates.jsonl
 ```
 
-Score each repair candidate with the heuristic verifier used by the smoke run.
+## Step 9. Score Repairs
+
+Run the official benchmark verifier on `repair_candidates.jsonl`, then save verifier-scored candidates to:
+
+```text
+artifacts/round_0/repair_candidates.verified.jsonl
+```
+
+Normalize and validate the scored candidate file.
 
 ```bash
 python scripts/score_repairs.py \
-  --candidates artifacts/round_0/repair_candidates.jsonl \
+  --candidates artifacts/round_0/repair_candidates.verified.jsonl \
   --output artifacts/round_0/scored_repair_candidates.jsonl
 ```
+
+## Step 10. Build Replay
 
 Apply feasibility filtering and Pareto-front selection to build repair replay data.
 
@@ -94,66 +110,64 @@ python scripts/build_replay.py \
   --output artifacts/round_0/replay.jsonl
 ```
 
-Run the mock SFT stage and write a placeholder checkpoint for the smoke pipeline.
+## Step 11. Train SFT
+
+Run supervised fine-tuning on the selected repair replay pairs.
 
 ```bash
 python scripts/train_sft.py \
-  --backend mock \
   --config configs/qwen3_8b_fate.yaml \
   --replay artifacts/round_0/replay.jsonl \
   --output-dir artifacts/round_0/sft
 ```
 
-Sample grouped PFPO completions from the mock policy backend.
+## Step 12. Sample PFPO Groups
+
+Sample grouped completions from the SFT policy for PFPO optimization.
 
 ```bash
 python scripts/make_pfpo_groups.py \
-  --backend mock \
   --config configs/qwen3_8b_fate.yaml \
+  --model-name-or-path artifacts/round_0/sft \
   --prompts artifacts/round_0/repair_prompts.jsonl \
   --output artifacts/round_0/pfpo_groups.unscored.jsonl
 ```
 
-Score PFPO completions and convert verifier scores into Pareto rewards.
+## Step 13. Score PFPO Groups
+
+Run the official benchmark verifier on each PFPO completion and add `scores` to every completion. Save the result to:
+
+```text
+artifacts/round_0/pfpo_groups.verified.jsonl
+```
+
+Convert verifier scores into Pareto rewards.
 
 ```bash
 python scripts/score_pfpo_groups.py \
   --config configs/qwen3_8b_fate.yaml \
-  --groups artifacts/round_0/pfpo_groups.unscored.jsonl \
+  --groups artifacts/round_0/pfpo_groups.verified.jsonl \
   --output artifacts/round_0/pfpo_groups.scored.jsonl
 ```
 
-Run the mock PFPO stage and write a placeholder checkpoint for the smoke pipeline.
+## Step 14. Train PFPO
+
+Run PFPO using the verifier-scored grouped completions.
 
 ```bash
 python scripts/train_pfpo.py \
-  --backend mock \
   --config configs/qwen3_8b_fate.yaml \
   --groups artifacts/round_0/pfpo_groups.scored.jsonl \
   --sft-checkpoint artifacts/round_0/sft \
   --output-dir artifacts/round_0/pfpo
 ```
 
-Summarize replay quality into a metrics JSON file.
+## Step 15. Evaluate
+
+Evaluate replay quality or adapt this step to official benchmark test-set evaluation.
 
 ```bash
 python scripts/evaluate.py \
   --replay artifacts/round_0/replay.jsonl \
-  --output results/smoke_metrics.json
+  --output results/replay_metrics.json
 ```
-
-## Step 5. Download Real Datasets
-
-Download the external benchmark assets used for real experiments.
-
-```bash
-python scripts/download_datasets.py \
-  --datasets agentharm atbench agentdojo \
-  --output-dir data/raw
-```
-
-## Step 6. Run with a Real HF Model
-
-Use `--backend hf` instead of `--backend mock` for generation and training commands. This switches from the local mock backend to Hugging Face model loading.
-
-Real runs require GPU-compatible PyTorch, Hugging Face access, benchmark rollout logs, and official benchmark verifiers.

@@ -3,7 +3,7 @@
 Run:
 
 ```bash
-python scripts/download_datasets.py --output-dir data/raw
+python scripts/download_datasets.py --datasets agentharm atbench agentdojo --output-dir data/raw
 ```
 
 Raw benchmark files are ignored by git.
