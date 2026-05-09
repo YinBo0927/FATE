@@ -2,17 +2,16 @@
 from __future__ import annotations
 
 import argparse
-
-from peft import LoraConfig, get_peft_model
-from transformers import AutoModelForCausalLM, AutoTokenizer
+import json
+from pathlib import Path
 
 from fate.config import load_yaml
-from fate.training.sft import CompletionOnlyExample, make_trainer
 from fate.utils.io import read_jsonl
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run SFT repair warmup.")
+    parser.add_argument("--backend", choices=["mock", "hf"], default="mock")
     parser.add_argument("--config", required=True)
     parser.add_argument("--replay", required=True)
     parser.add_argument("--output-dir", required=True)
@@ -22,6 +21,14 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     config = load_yaml(args.config)
+    if args.backend == "mock":
+        _write_mock_checkpoint(args.output_dir, args.replay, stage="sft")
+        return
+
+    from peft import LoraConfig, get_peft_model
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from fate.training.sft import CompletionOnlyExample, make_trainer
+
     model_cfg = config["model"]
     tokenizer = AutoTokenizer.from_pretrained(
         model_cfg["name_or_path"],
@@ -59,6 +66,21 @@ def main() -> None:
     trainer.train()
     trainer.save_model(args.output_dir)
     tokenizer.save_pretrained(args.output_dir)
+
+
+def _write_mock_checkpoint(output_dir: str, replay_path: str, stage: str) -> None:
+    output = Path(output_dir)
+    output.mkdir(parents=True, exist_ok=True)
+    rows = read_jsonl(replay_path)
+    payload = {
+        "stage": stage,
+        "backend": "mock",
+        "num_examples": len(rows),
+        "note": "This checkpoint is produced by the smoke pipeline and is not a model.",
+    }
+    with (output / "mock_checkpoint.json").open("w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+    print(f"wrote mock {stage} checkpoint to {output}")
 
 
 if __name__ == "__main__":

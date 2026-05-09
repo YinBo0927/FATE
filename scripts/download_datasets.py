@@ -11,6 +11,9 @@ from urllib.request import urlretrieve
 from datasets import Dataset, DatasetDict, load_dataset
 from huggingface_hub import snapshot_download
 
+from fate.mock import SAMPLE_TASKS
+from fate.utils.io import write_jsonl
+
 
 AGENTHARM_REPO = "ai-safety-institute/AgentHarm"
 ATBENCH_REPO = "AI45Research/ATBench"
@@ -23,8 +26,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--datasets",
         nargs="+",
-        default=["agentharm", "atbench", "agentdojo"],
-        choices=["agentharm", "atbench", "agentdojo"],
+        default=["sample"],
+        choices=["sample", "agentharm", "atbench", "agentdojo"],
     )
     parser.add_argument("--hf-token", default=None)
     return parser.parse_args()
@@ -35,12 +38,20 @@ def main() -> None:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    if "sample" in args.datasets:
+        download_sample(output_dir / "sample")
     if "agentharm" in args.datasets:
         download_agentharm(output_dir / "agentharm", token=args.hf_token)
     if "atbench" in args.datasets:
         download_atbench(output_dir / "atbench", token=args.hf_token)
     if "agentdojo" in args.datasets:
         download_agentdojo(output_dir / "agentdojo")
+
+
+def download_sample(output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    write_jsonl(output_dir / "tasks.jsonl", SAMPLE_TASKS)
+    _write_manifest(output_dir, "bundled-sample", str(output_dir / "tasks.jsonl"))
 
 
 def download_agentharm(output_dir: Path, token: str | None) -> None:

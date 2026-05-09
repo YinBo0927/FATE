@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FATE: On-Policy Self-Evolution via Failure Trajectories</title>
+    <meta
+      name="description"
+      content="Project page for FATE, a failure-trajectory evolution framework for agentic safety alignment."
+    />
+    <link rel="stylesheet" href="assets/project.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <div class="hero__content">
+          <p class="venue">Agentic Safety Alignment</p>
+          <h1>On-Policy Self-Evolution via Failure Trajectories for Agentic Safety Alignment</h1>
+          <div class="authors" aria-label="Authors">
+            <p>
+              <strong>Bo Yin<sup>*</sup></strong>
+              <strong>Qi Li<sup>*</sup></strong>
+              <strong>Xinchao Wang<sup>&dagger;</sup></strong>
+            </p>
+            <p>National University of Singapore</p>
+            <p>{yin.bo, liqi}@u.nus.edu &nbsp;&nbsp; xinchao@nus.edu.sg</p>
+          </div>
+          <div class="actions">
+            <a href="https://github.com/YinBo0927/FATE">Code</a>
+            <a href="#method">Method</a>
+            <a href="#citation">Citation</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="abstract">
+        <div class="section__inner">
+          <h2>Abstract</h2>
+          <p>
+            Tool-using language agents can fail through complete trajectories rather than only final
+            responses. FATE converts verifier-scored failures into repair supervision by having the
+            current policy propose repairs, re-scoring those repairs across multiple objectives, and
+            selecting Pareto-balanced targets for policy refinement.
+          </p>
+        </div>
+      </section>
+
+      <section class="section section--figure" id="method">
+        <div class="section__inner">
+          <h2>Method Overview</h2>
+          <img
+            src="assets/fate_overview.svg"
+            alt="FATE pipeline showing failure collection, repair proposal, verifier scoring, Pareto replay, and policy update."
+          />
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section__inner grid">
+          <article>
+            <h3>Failure Collection</h3>
+            <p>Roll out the current agent, preserve failed trajectories, and attach verifier feedback.</p>
+          </article>
+          <article>
+            <h3>Repair Selection</h3>
+            <p>Generate same-policy repairs, re-score them, and keep balanced Pareto-front targets.</p>
+          </article>
+          <article>
+            <h3>Policy Update</h3>
+            <p>Use replay targets for supervised warmup and grouped Pareto rewards for refinement.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="citation">
+        <div class="section__inner">
+          <h2>Citation</h2>
+          <pre><code>@misc{yin2026fate,
+  title  = {On-Policy Self-Evolution via Failure Trajectories for Agentic Safety Alignment},
+  author = {Bo Yin and Qi Li and Xinchao Wang},
+  year   = {2026}
+}</code></pre>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
