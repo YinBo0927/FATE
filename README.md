@@ -1,5 +1,33 @@
 # FATE
 
+## Framework
+
+The framework collects failed trajectories, asks the current policy to generate repairs, filters repaired trajectories with verifier scores and Pareto-front selection, then updates the policy with SFT and PFPO.
+
+![FATE framework](assets/fate_figure1.png)
+
+## Experimental Results
+
+### Qwen3-8B-Instruct Main Results
+
+| Benchmark | Metric | Base | FATE | Direction |
+| --- | --- | ---: | ---: | --- |
+| AgentDojo | ASR | 0.812 | 0.540 | lower is better |
+| AgentDojo | TSR | 0.132 | 0.392 | higher is better |
+| AgentDojo | BRR | 0.104 | 0.082 | lower is better |
+| AgentHarm | HCR | 0.719 | 0.125 | lower is better |
+| AgentHarm | VRR | 0.156 | 0.812 | higher is better |
+| AgentHarm | SafeScore | 0.241 | 0.870 | higher is better |
+
+### External Trajectory-Safety Generalization
+
+| Model | ATBench-C F1 | Risk Source | Failure Mode | Real-World Harm |
+| --- | ---: | ---: | ---: | ---: |
+| AgentDoG-Qwen3-4B | 71.1 | 46.8 | 16.5 | 40.6 |
+| Qwen3-8B-Instruct + FATE | 79.5 | 49.2 | 18.4 | 43.1 |
+
+## Reproduction
+
 ## Step 1. Clone
 
 Clone the repository and enter the project directory.

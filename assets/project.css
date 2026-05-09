@@ -113,6 +113,58 @@ body {
   line-height: 1.8;
 }
 
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.result-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--background-secondary);
+  padding: 1.4rem;
+  text-align: center;
+}
+
+.result-value {
+  color: var(--primary-color);
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.result-label {
+  margin-top: 0.7rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.table-wrap {
+  margin-top: 2rem;
+}
+
+.table-wrap .title {
+  margin-bottom: 0.8rem;
+}
+
+.table {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table th {
+  color: var(--text-primary);
+  background: var(--background-accent);
+}
+
+.table td {
+  color: var(--text-secondary);
+}
+
 pre {
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
@@ -151,5 +203,9 @@ code {
   .eql-cntrb {
     flex-direction: column;
     gap: 0.2rem;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
   }
 }

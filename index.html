@@ -77,6 +77,11 @@
                       <span>BibTeX</span>
                     </a>
                   </span>
+                  <span class="link-block">
+                    <a href="#experiments" class="button is-normal is-rounded is-dark">
+                      <span>Results</span>
+                    </a>
+                  </span>
                 </div>
               </div>
             </div>
@@ -85,9 +90,36 @@
       </div>
     </section>
 
-    <section class="hero teaser">
+    <section class="section" id="abstract">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Tool-using language model agents can behave unsafely at intermediate steps even
+                when their final answer appears acceptable. A trajectory may contain an unsafe tool
+                call, a leaked value, obedience to an injected instruction, harmful compliance, or an
+                unnecessary refusal of a benign task. FATE addresses this trajectory-level safety
+                problem by turning the agent's own verifier-scored failures into repair supervision.
+                For each failed rollout, the current policy proposes multiple corrected trajectories.
+                These candidates are then re-evaluated for security, task utility, refusal calibration,
+                and trajectory validity. Feasible candidates are filtered through a Pareto-front
+                selection rule, producing balanced repair targets without relying on expert-written
+                demonstrations. The selected repairs are used for supervised warmup and
+                Pareto-aware policy optimization, allowing the policy to improve from its current
+                failure distribution while preserving useful behavior.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero teaser" id="framework">
       <div class="container is-max-desktop">
         <div class="hero-body">
+          <h2 class="title is-3 has-text-centered">Framework</h2>
           <img
             src="assets/fate_figure1.png"
             class="teaser-image"
@@ -100,38 +132,112 @@
       </div>
     </section>
 
-    <section class="section" id="abstract">
+    <section class="section" id="experiments">
       <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-            <h2 class="title is-3">Abstract</h2>
-            <div class="content has-text-justified">
-              <p>
-                Tool-using language agents can fail through complete trajectories rather than only
-                final responses. FATE converts verifier-scored failures into repair supervision by
-                having the current policy propose repairs, re-scoring those repairs across multiple
-                objectives, and selecting Pareto-balanced targets for policy refinement.
-              </p>
-            </div>
+        <h2 class="title is-3 has-text-centered">Experimental Results</h2>
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="result-value">33.5%</div>
+            <div class="result-label">relative ASR reduction on AgentDojo</div>
+          </div>
+          <div class="result-card">
+            <div class="result-value">82.6%</div>
+            <div class="result-label">relative HCR reduction on AgentHarm</div>
+          </div>
+          <div class="result-card">
+            <div class="result-value">+6.5</div>
+            <div class="result-label">ATBench-C F1 improvement over AgentDoG-Qwen3-4B</div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="section" id="method">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column is-full-width">
-            <h2 class="title is-3 has-text-centered">Method</h2>
-            <div class="content has-text-justified">
-              <p>
-                The pipeline first collects failed trajectories from the current policy, then asks
-                the same policy to generate repair candidates. Each repair is scored for security,
-                task utility, over-refusal control, and trajectory control. Feasible Pareto-front
-                candidates become replay targets for SFT and PFPO updates.
-              </p>
-            </div>
-          </div>
+        <div class="table-wrap">
+          <h3 class="title is-5">Qwen3-8B-Instruct Main Results</h3>
+          <table class="table is-fullwidth is-striped">
+            <thead>
+              <tr>
+                <th>Benchmark</th>
+                <th>Metric</th>
+                <th>Base</th>
+                <th>FATE</th>
+                <th>Direction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AgentDojo</td>
+                <td>ASR</td>
+                <td>0.812</td>
+                <td>0.540</td>
+                <td>lower is better</td>
+              </tr>
+              <tr>
+                <td>AgentDojo</td>
+                <td>TSR</td>
+                <td>0.132</td>
+                <td>0.392</td>
+                <td>higher is better</td>
+              </tr>
+              <tr>
+                <td>AgentDojo</td>
+                <td>BRR</td>
+                <td>0.104</td>
+                <td>0.082</td>
+                <td>lower is better</td>
+              </tr>
+              <tr>
+                <td>AgentHarm</td>
+                <td>HCR</td>
+                <td>0.719</td>
+                <td>0.125</td>
+                <td>lower is better</td>
+              </tr>
+              <tr>
+                <td>AgentHarm</td>
+                <td>VRR</td>
+                <td>0.156</td>
+                <td>0.812</td>
+                <td>higher is better</td>
+              </tr>
+              <tr>
+                <td>AgentHarm</td>
+                <td>SafeScore</td>
+                <td>0.241</td>
+                <td>0.870</td>
+                <td>higher is better</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap">
+          <h3 class="title is-5">External Trajectory-Safety Generalization</h3>
+          <table class="table is-fullwidth is-striped">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>ATBench-C F1</th>
+                <th>Risk Source</th>
+                <th>Failure Mode</th>
+                <th>Real-World Harm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AgentDoG-Qwen3-4B</td>
+                <td>71.1</td>
+                <td>46.8</td>
+                <td>16.5</td>
+                <td>40.6</td>
+              </tr>
+              <tr>
+                <td>Qwen3-8B-Instruct + FATE</td>
+                <td>79.5</td>
+                <td>49.2</td>
+                <td>18.4</td>
+                <td>43.1</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
