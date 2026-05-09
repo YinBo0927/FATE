@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+from __future__ import annotations
+
+import argparse
+
+from fate.agents.hf_policy import HFPolicyClient
+from fate.config import load_yaml
+from fate.utils.io import read_jsonl, write_jsonl
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Generate same-policy repair candidates.")
+    parser.add_argument("--config", required=True)
+    parser.add_argument("--prompts", required=True)
+    parser.add_argument("--output", required=True)
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    config = load_yaml(args.config)
+    model_cfg = config["model"]
+    gen_cfg = config["generation"]
+    client = HFPolicyClient.from_pretrained(
+        name_or_path=model_cfg["name_or_path"],
+        torch_dtype=model_cfg.get("torch_dtype", "bfloat16"),
+        trust_remote_code=bool(model_cfg.get("trust_remote_code", True)),
+        attn_implementation=model_cfg.get("attn_implementation"),
+    )
+    rows = read_jsonl(args.prompts)
+    outputs = []
+    batch_size = int(config["evolution"].get("proposal_batch_size", 4))
+    for start in range(0, len(rows), batch_size):
+        batch = rows[start : start + batch_size]
+        generations = client.generate(
+            [row["prompt"] for row in batch],
+            max_new_tokens=int(model_cfg["max_new_tokens"]),
+            temperature=float(gen_cfg["temperature"]),
+            top_p=float(gen_cfg["top_p"]),
+            num_return_sequences=int(gen_cfg["repairs_per_failure"]),
+        )
+        for row, group in zip(batch, generations, strict=True):
+            for index, generation in enumerate(group):
+                outputs.append(
+                    {
+                        "failure_id": row["failure_id"],
+                        "candidate_id": f"{row['failure_id']}-k{index}",
+                        "trajectory": generation.text,
+                        "proposal_logprob": generation.logprob,
+                        "metadata": {"mode": row["mode"], **dict(row.get("metadata", {}))},
+                    }
+                )
+    write_jsonl(args.output, outputs)
+    print(f"wrote {len(outputs)} repair candidates to {args.output}")
+
+
+if __name__ == "__main__":
+    main()

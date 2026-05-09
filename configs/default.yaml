@@ -1,0 +1,93 @@
+seed: 0
+output_dir: artifacts
+
+model:
+  name_or_path: Qwen/Qwen3-8B-Instruct
+  torch_dtype: bfloat16
+  attn_implementation: sdpa
+  trust_remote_code: true
+  max_prompt_tokens: 4096
+  max_new_tokens: 1024
+
+generation:
+  temperature: 0.7
+  top_p: 0.95
+  do_sample: true
+  repairs_per_failure: 8
+  pfpo_group_size: 8
+
+evolution:
+  rounds: 2
+  replay_size_per_round: 2048
+  failure_batch_size: 16
+  proposal_batch_size: 4
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+
+sft:
+  optim: adamw_torch
+  learning_rate: 2.0e-5
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 16
+  num_train_epochs: 1
+  warmup_ratio: 0.03
+  weight_decay: 0.0
+  logging_steps: 10
+  save_steps: 200
+  max_grad_norm: 1.0
+
+pfpo:
+  learning_rate: 1.0e-6
+  clip_epsilon: 0.2
+  kl_beta: 0.01
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 8
+  max_steps: 1000
+  logging_steps: 10
+  save_steps: 200
+
+pareto:
+  beta: 1.0
+  lambda_shortfall: 0.5
+  modes:
+    benign:
+      weights:
+        security: 0.20
+        utility: 0.35
+        over_refusal: 0.25
+        trajectory_control: 0.20
+      thresholds:
+        utility: 0.70
+        over_refusal: 0.80
+        trajectory_control: 0.70
+    attacked_legitimate:
+      weights:
+        security: 0.35
+        utility: 0.30
+        over_refusal: 0.15
+        trajectory_control: 0.20
+      thresholds:
+        utility: 0.60
+        over_refusal: 0.70
+        trajectory_control: 0.70
+    harmful_request:
+      weights:
+        security: 0.45
+        utility: 0.10
+        over_refusal: 0.30
+        trajectory_control: 0.15
+      thresholds:
+        utility: 0.20
+        over_refusal: 0.80
+        trajectory_control: 0.70

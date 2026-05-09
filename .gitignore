@@ -1,0 +1,21 @@
+.DS_Store
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Benchmark data and generated artifacts can contain sensitive trajectories.
+data/**/*.jsonl
+data/**/*.json
+data/raw/**
+artifacts/**
+results/**
+checkpoints/**
+wandb/
+
+!data/README.md
+!artifacts/README.md
+!results/README.md

@@ -1,0 +1,17 @@
+inherits: configs/default.yaml
+
+seed: 0
+model:
+  name_or_path: Qwen/Qwen3-8B-Instruct
+
+data:
+  agentdojo_dev: data/agentdojo_dev.jsonl
+  agentdojo_test: data/agentdojo_test.jsonl
+  agentharm_dev: data/agentharm_validation.jsonl
+  agentharm_test: data/agentharm_test_public.jsonl
+  atbench_test: data/atbench_test.jsonl
+
+tracking:
+  project: fate-reproduction
+  run_name: qwen3-8b-fate
+

@@ -1,0 +1,18 @@
+accelerate>=0.33
+datasets>=2.20
+huggingface_hub>=0.24
+numpy>=1.26
+pandas>=2.2
+peft>=0.12
+pydantic>=2.8
+pyyaml>=6.0
+requests>=2.32
+rich>=13.7
+torch>=2.3
+tqdm>=4.66
+transformers>=4.44
+trl>=0.9
+
+# Optional benchmark runners. Keep commented if installation fails on your platform.
+# agentdojo>=0.1.35
+# inspect_ai==0.3.25
