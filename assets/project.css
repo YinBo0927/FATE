@@ -23,6 +23,12 @@ body {
   letter-spacing: 0;
 }
 
+.title-logo {
+  display: block;
+  width: min(560px, 90%);
+  margin: 0 auto 1rem;
+}
+
 .publication-header {
   background: linear-gradient(180deg, #ffffff 0%, var(--background-secondary) 100%);
   border-bottom: 1px solid var(--border-color);
@@ -48,6 +54,18 @@ body {
   gap: 1rem;
   margin-top: 0.8rem;
   color: var(--text-secondary);
+}
+
+.affiliation-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0.8rem 0 0.2rem;
+}
+
+.affiliation-logo {
+  display: block;
+  width: min(230px, 60vw);
+  height: auto;
 }
 
 .publication-links {
@@ -113,56 +131,26 @@ body {
   line-height: 1.8;
 }
 
-.result-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin: 1.5rem 0 2rem;
-}
-
-.result-card {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  background: var(--background-secondary);
-  padding: 1.4rem;
+.paper-result {
+  margin: 2rem auto 0;
   text-align: center;
 }
 
-.result-value {
-  color: var(--primary-color);
-  font-size: 2.2rem;
-  font-weight: 800;
-  line-height: 1;
+.paper-result img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
 }
 
-.result-label {
+.paper-result figcaption {
   margin-top: 0.7rem;
   color: var(--text-secondary);
   font-size: 0.95rem;
-  line-height: 1.45;
-}
-
-.table-wrap {
-  margin-top: 2rem;
-}
-
-.table-wrap .title {
-  margin-bottom: 0.8rem;
-}
-
-.table {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.table th {
-  color: var(--text-primary);
-  background: var(--background-accent);
-}
-
-.table td {
-  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 pre {
@@ -205,7 +193,7 @@ code {
     gap: 0.2rem;
   }
 
-  .result-grid {
-    grid-template-columns: 1fr;
+  .paper-result {
+    margin-top: 1.5rem;
   }
 }
