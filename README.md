@@ -39,7 +39,7 @@ National University of Singapore
 
 ASR and BRR are lower-is-better. TSR is higher-is-better.
 
-| Backbone | Method | ASR (lower) | TSR (higher) | BRR (lower) |
+| Backbone | Method | ASR ↓ | TSR ↑ | BRR ↓ |
 | --- | --- | ---: | ---: | ---: |
 | Qwen3-8B-Instruct | Base | 0.812 | 0.132 | 0.104 |
 | Qwen3-8B-Instruct | FATE | **0.540** | **0.392** | **0.082** |
@@ -56,7 +56,7 @@ ASR and BRR are lower-is-better. TSR is higher-is-better.
 
 HCR is lower-is-better. VRR and SafeScore are higher-is-better.
 
-| Backbone | Method | HCR (lower) | VRR (higher) | SafeScore (higher) |
+| Backbone | Method | HCR ↓ | VRR ↑ | SafeScore ↑ |
 | --- | --- | ---: | ---: | ---: |
 | Qwen3-8B-Instruct | Base | 0.719 | 0.156 | 0.241 |
 | Qwen3-8B-Instruct | FATE | **0.125** | **0.812** | **0.870** |
@@ -75,7 +75,7 @@ HCR is lower-is-better. VRR and SafeScore are higher-is-better.
 
 ### ATBench External Generalization
 
-| Model | ATBench-C Acc. (higher) | ATBench-C Prec. (higher) | ATBench-C Rec. (higher) | ATBench-C F1 (higher) | ATBench-F R.S. (higher) | ATBench-F F.M. (higher) | ATBench-F R.H. (higher) |
+| Model | ATBench-C Acc. ↑ | ATBench-C Prec. ↑ | ATBench-C Rec. ↑ | ATBench-C F1 ↑ | ATBench-F R.S. ↑ | ATBench-F F.M. ↑ | ATBench-F R.H. ↑ |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | AgentDoG-Qwen3-4B | 64.0 | 59.2 | 88.9 | 71.1 | 46.8 | 16.5 | 40.6 |
 | Qwen3-8B-Instruct + FATE | **77.8** | **80.5** | 78.6 | **79.5** | **49.2** | **18.4** | **43.1** |
