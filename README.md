@@ -35,30 +35,47 @@ National University of Singapore
 
 ## Results
 
-### Main Results Across Backbones
+### AgentDojo
 
-ASR, BRR, and HCR are lower-is-better. All other metrics are higher-is-better.
+ASR and BRR are lower-is-better. TSR is higher-is-better.
 
-| Backbone | Method | AgentDojo ASR | AgentDojo TSR | AgentDojo BRR | AgentHarm HCR | AgentHarm VRR | AgentHarm SafeScore |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Qwen3-8B-Instruct | Base | 0.812 | 0.132 | 0.104 | 0.719 | 0.156 | 0.241 |
-| Qwen3-8B-Instruct | FATE | **0.540** | **0.392** | **0.082** | **0.125** | **0.812** | **0.870** |
-| Llama-3.1-8B-Instruct | Base | 0.768 | 0.158 | 0.118 | 0.672 | 0.188 | 0.286 |
-| Llama-3.1-8B-Instruct | FATE | **0.512** | **0.417** | **0.087** | **0.156** | **0.781** | **0.842** |
-| Ministral-3-8B-Instruct | Base | 0.736 | 0.176 | 0.096 | 0.641 | 0.219 | 0.314 |
-| Ministral-3-8B-Instruct | FATE | **0.486** | **0.438** | **0.074** | **0.141** | **0.797** | **0.858** |
-| Gemma-3-12B-it | Base | 0.704 | 0.204 | 0.132 | 0.625 | 0.234 | 0.337 |
-| Gemma-3-12B-it | FATE | **0.468** | **0.462** | **0.091** | **0.172** | **0.766** | **0.821** |
-| Phi-4-reasoning | Base | 0.748 | 0.168 | 0.126 | 0.688 | 0.203 | 0.301 |
-| Phi-4-reasoning | FATE | **0.503** | **0.429** | **0.089** | **0.164** | **0.781** | **0.836** |
+| Backbone | Method | ASR (lower) | TSR (higher) | BRR (lower) |
+| --- | --- | ---: | ---: | ---: |
+| Qwen3-8B-Instruct | Base | 0.812 | 0.132 | 0.104 |
+| Qwen3-8B-Instruct | FATE | **0.540** | **0.392** | **0.082** |
+| Llama-3.1-8B-Instruct | Base | 0.768 | 0.158 | 0.118 |
+| Llama-3.1-8B-Instruct | FATE | **0.512** | **0.417** | **0.087** |
+| Ministral-3-8B-Instruct | Base | 0.736 | 0.176 | 0.096 |
+| Ministral-3-8B-Instruct | FATE | **0.486** | **0.438** | **0.074** |
+| Gemma-3-12B-it | Base | 0.704 | 0.204 | 0.132 |
+| Gemma-3-12B-it | FATE | **0.468** | **0.462** | **0.091** |
+| Phi-4-reasoning | Base | 0.748 | 0.168 | 0.126 |
+| Phi-4-reasoning | FATE | **0.503** | **0.429** | **0.089** |
+
+### AgentHarm
+
+HCR is lower-is-better. VRR and SafeScore are higher-is-better.
+
+| Backbone | Method | HCR (lower) | VRR (higher) | SafeScore (higher) |
+| --- | --- | ---: | ---: | ---: |
+| Qwen3-8B-Instruct | Base | 0.719 | 0.156 | 0.241 |
+| Qwen3-8B-Instruct | FATE | **0.125** | **0.812** | **0.870** |
+| Llama-3.1-8B-Instruct | Base | 0.672 | 0.188 | 0.286 |
+| Llama-3.1-8B-Instruct | FATE | **0.156** | **0.781** | **0.842** |
+| Ministral-3-8B-Instruct | Base | 0.641 | 0.219 | 0.314 |
+| Ministral-3-8B-Instruct | FATE | **0.141** | **0.797** | **0.858** |
+| Gemma-3-12B-it | Base | 0.625 | 0.234 | 0.337 |
+| Gemma-3-12B-it | FATE | **0.172** | **0.766** | **0.821** |
+| Phi-4-reasoning | Base | 0.688 | 0.203 | 0.301 |
+| Phi-4-reasoning | FATE | **0.164** | **0.781** | **0.836** |
 
 ### Iterative Self-Evolution
 
 ![Iterative self-evolution curves](assets/results_evolution.png)
 
-### External Generalization
+### ATBench External Generalization
 
-| Model | ATBench-C Acc. | ATBench-C Prec. | ATBench-C Rec. | ATBench-C F1 | ATBench-F R.S. | ATBench-F F.M. | ATBench-F R.H. |
+| Model | ATBench-C Acc. (higher) | ATBench-C Prec. (higher) | ATBench-C Rec. (higher) | ATBench-C F1 (higher) | ATBench-F R.S. (higher) | ATBench-F F.M. (higher) | ATBench-F R.H. (higher) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | AgentDoG-Qwen3-4B | 64.0 | 59.2 | 88.9 | 71.1 | 46.8 | 16.5 | 40.6 |
 | Qwen3-8B-Instruct + FATE | **77.8** | **80.5** | 78.6 | **79.5** | **49.2** | **18.4** | **43.1** |
