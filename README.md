@@ -14,7 +14,7 @@
 ------------------
 
 **Authors:**<br>
-[Bo Yin](https://scholar.google.com/citations?user=YSA01EoAAAAJ&hl=zh-CN)<sup>*</sup>, [Qi Li](https://scholar.google.com/citations?user=gsV-g2wAAAAJ&hl=zh-CN)<sup>*</sup>, [Xinchao Wang](https://scholar.google.com/citations?user=w69Buq0AAAAJ&hl=en)<sup>&dagger;</sup>
+<a href="https://scholar.google.com/citations?user=YSA01EoAAAAJ&hl=zh-CN">Bo Yin*</a>, <a href="https://scholar.google.com/citations?user=gsV-g2wAAAAJ&hl=zh-CN">Qi Li*</a>, <a href="https://scholar.google.com/citations?user=w69Buq0AAAAJ&hl=en">Xinchao Wang<sup>&dagger;</sup></a>
 
 National University of Singapore
 
@@ -22,10 +22,6 @@ National University of Singapore
 <sup>&dagger;</sup> Corresponding author: [xinchao@nus.edu.sg](mailto:xinchao@nus.edu.sg)
 
 ------------------
-
-TL;DR (1) - FATE converts verifier-scored failed agent trajectories into repair supervision for safer tool-using agents.
-
-TL;DR (2) - FATE combines same-policy repair generation, Pareto-front filtering, SFT, and PFPO to improve safety while preserving task utility.
 
 ## Overview
 
