@@ -9,18 +9,17 @@
   <img src="https://img.shields.io/badge/Project-Page-2f80ed.svg" alt="Project Page"/>
 </a>
 </div>
+</div>
 
-<div>
-<a href="https://scholar.google.com/citations?user=YSA01EoAAAAJ&hl=zh-CN">Bo Yin</a><sup>*</sup>&emsp;
-<a href="https://scholar.google.com/citations?user=gsV-g2wAAAAJ&hl=zh-CN">Qi Li</a><sup>*</sup>&emsp;
-<a href="https://scholar.google.com/citations?user=w69Buq0AAAAJ&hl=en">Xinchao Wang</a><sup>&dagger;</sup>
-</div>
-<div>
-National University of Singapore&emsp;
-<sup>*</sup>equal contribution&emsp;
-<sup>&dagger;</sup>corresponding author
-</div>
-</div>
+------------------
+
+**Authors:**<br>
+[Bo Yin](https://scholar.google.com/citations?user=YSA01EoAAAAJ&hl=zh-CN)<sup>*</sup>, [Qi Li](https://scholar.google.com/citations?user=gsV-g2wAAAAJ&hl=zh-CN)<sup>*</sup>, [Xinchao Wang](https://scholar.google.com/citations?user=w69Buq0AAAAJ&hl=en)<sup>&dagger;</sup>
+
+National University of Singapore
+
+<sup>*</sup> Equal contribution.<br>
+<sup>&dagger;</sup> Corresponding author: [xinchao@nus.edu.sg](mailto:xinchao@nus.edu.sg)
 
 ------------------
 
