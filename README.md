@@ -75,10 +75,26 @@ HCR is lower-is-better. VRR and SafeScore are higher-is-better.
 
 ### ATBench External Generalization
 
-| Model | ATBench-C Acc. ↑ | ATBench-C Prec. ↑ | ATBench-C Rec. ↑ | ATBench-C F1 ↑ | ATBench-F R.S. ↑ | ATBench-F F.M. ↑ | ATBench-F R.H. ↑ |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| AgentDoG-Qwen3-4B | 64.0 | 59.2 | 88.9 | 71.1 | 46.8 | 16.5 | 40.6 |
-| Qwen3-8B-Instruct + FATE | **77.8** | **80.5** | 78.6 | **79.5** | **49.2** | **18.4** | **43.1** |
+| Category | Model | ATBench-C Acc. ↑ | ATBench-C Prec. ↑ | ATBench-C Rec. ↑ | ATBench-C F1 ↑ | ATBench-F R.S. ↑ | ATBench-F F.M. ↑ | ATBench-F R.H. ↑ |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Closed-source | GPT-5.4 | 73.7 | 68.5 | 87.1 | 76.7 | 33.6 | 13.5 | 30.2 |
+| Closed-source | GPT-5.2 | 69.0 | 65.6 | 79.3 | 71.8 | 29.5 | 12.0 | 26.8 |
+| Closed-source | Gemini-3-Flash | 76.4 | 79.3 | 71.0 | 74.9 | 18.4 | 8.3 | 15.0 |
+| Closed-source | Gemini-3.1-Pro | 75.5 | 76.1 | 73.8 | 75.0 | 24.8 | 12.6 | 18.5 |
+| Open-source | Qwen3.5-397B-A17B | 66.8 | 65.5 | 70.2 | 67.8 | 7.7 | 3.6 | 6.8 |
+| Open-source | Qwen3.5-4B | 45.9 | 41.2 | 20.7 | 27.6 | 6.6 | 3.0 | 8.2 |
+| Open-source | Qwen3-4B | 52.6 | 78.0 | 6.4 | 11.9 | 4.4 | 8.2 | 18.3 |
+| Open-source | QwQ-32B | 57.7 | 81.9 | 19.1 | 31.0 | 15.8 | 9.4 | 22.9 |
+| Open-source | Qwen3-235B-A22B-Instruct-2507 | 59.2 | 58.2 | 63.8 | 60.8 | 7.0 | 11.6 | 26.6 |
+| Open-source | Qwen3-4B-Instruct-2507 | 55.7 | 77.6 | 15.3 | 25.5 | 1.0 | 9.6 | 21.2 |
+| Open-source | Qwen2.5-7B-Instruct | 53.4 | 73.8 | 9.7 | 17.1 | 5.3 | 6.0 | 15.5 |
+| Open-source | Llama3.1-8B-Instruct | 45.3 | 47.3 | 89.5 | 61.9 | 6.2 | 5.8 | 15.5 |
+| Guard | LlamaGuard3-8B | 53.1 | 85.7 | 3.8 | 7.3 | - | - | - |
+| Guard | LlamaGuard4-12B | 58.1 | 63.8 | 30.9 | 41.7 | - | - | - |
+| Guard | Qwen3-Guard | 51.5 | 40.0 | 0.4 | 0.8 | - | - | - |
+| Guard | ShieldAgent | 62.5 | 58.0 | 81.4 | 67.7 | - | - | - |
+| Guard | AgentDoG-Qwen3-4B | 64.0 | 59.2 | 88.9 | 71.1 | 46.8 | 16.5 | 40.6 |
+| Ours | Qwen3-8B-Instruct + FATE | **77.8** | 80.5 | 78.6 | **79.5** | **49.2** | **18.4** | **43.1** |
 
 ## Installation
 
