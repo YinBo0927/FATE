@@ -27,14 +27,25 @@
     <link rel="stylesheet" href="assets/project.css" />
   </head>
   <body>
-    <section class="hero publication-header">
-      <a class="nus-corner" href="https://nus.edu.sg/" aria-label="National University of Singapore">
+    <nav class="top-nav" aria-label="Page navigation">
+      <a class="nav-brand" href="#">FATE</a>
+      <div class="nav-links">
+        <a href="#abstract">Abstract</a>
+        <a href="#framework">Framework</a>
+        <a href="#experiments">Results</a>
+        <a href="#citation">BibTeX</a>
+        <a href="https://github.com/YinBo0927/FATE">Code</a>
+      </div>
+      <a class="nav-logo" href="https://nus.edu.sg/" aria-label="National University of Singapore">
         <img
           src="https://nus.edu.sg/images/default-source/identity-images/NUS_logo_full-horizontal.jpg"
           onerror="this.onerror=null;this.src='assets/nus_logo.svg';"
           alt="National University of Singapore logo"
         />
       </a>
+    </nav>
+
+    <section class="hero publication-header">
       <div class="hero-body">
         <div class="container is-max-desktop">
           <div class="columns is-centered">
@@ -44,14 +55,15 @@
                 class="title-logo"
                 alt="FATE: Failure-Trajectory Evolution"
               />
+              <p class="paper-name">FATE</p>
               <h1 class="title is-1 publication-title">
                 On-Policy Self-Evolution via Failure Trajectories for Agentic Safety Alignment
               </h1>
 
               <div class="is-size-5 publication-authors">
-                <span class="author-block">Bo Yin<sup>*</sup></span>
-                <span class="author-block">Qi Li<sup>*</sup></span>
-                <span class="author-block">Xinchao Wang<sup>&dagger;</sup></span>
+                <span class="author-block author-name">Bo Yin<sup>*</sup></span>
+                <span class="author-block author-name">Qi Li<sup>*</sup></span>
+                <span class="author-block author-name">Xinchao Wang<sup>&dagger;</sup></span>
               </div>
 
               <div class="is-size-5 publication-authors">
@@ -80,18 +92,23 @@
                     </a>
                   </span>
                   <span class="link-block">
-                    <a href="#abstract" class="button is-normal is-rounded is-dark">
+                    <a href="#framework" class="button is-normal is-rounded is-dark">
+                      <span>Framework</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="#abstract" class="button is-normal is-rounded is-light">
                       <span>Abstract</span>
                     </a>
                   </span>
                   <span class="link-block">
-                    <a href="#citation" class="button is-normal is-rounded is-dark">
-                      <span>BibTeX</span>
+                    <a href="#experiments" class="button is-normal is-rounded is-light">
+                      <span>Results</span>
                     </a>
                   </span>
                   <span class="link-block">
-                    <a href="#experiments" class="button is-normal is-rounded is-dark">
-                      <span>Results</span>
+                    <a href="#citation" class="button is-normal is-rounded is-light">
+                      <span>BibTeX</span>
                     </a>
                   </span>
                 </div>
@@ -137,19 +154,17 @@
       </div>
     </section>
 
-    <section class="hero teaser" id="framework">
+    <section class="section framework-section" id="framework">
       <div class="container is-max-widescreen">
-        <div class="hero-body">
-          <h2 class="title is-3 has-text-centered">Framework</h2>
-          <img
-            src="assets/fate_figure1.png"
-            class="teaser-image"
-            alt="Figure 1 from the paper showing the FATE pipeline"
-          />
-          <h2 class="subtitle has-text-centered">
-            FATE turns failed agent trajectories into verifier-filtered repair supervision.
-          </h2>
-        </div>
+        <h2 class="title is-3 has-text-centered">Framework</h2>
+        <img
+          src="assets/fate_figure1.png"
+          class="teaser-image"
+          alt="Figure 1 from the paper showing the FATE pipeline"
+        />
+        <p class="figure-caption">
+          FATE turns failed agent trajectories into verifier-filtered repair supervision.
+        </p>
       </div>
     </section>
 
