@@ -20,7 +20,7 @@ body {
 
 .top-nav {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) 148px;
+  grid-template-columns: 120px minmax(0, 1fr) 210px;
   align-items: center;
   gap: 1rem;
   max-width: 980px;
@@ -59,17 +59,16 @@ body {
 .nav-logo {
   justify-self: end;
   display: flex;
-  width: 136px;
-  height: 42px;
+  width: 204px;
+  height: 62px;
   align-items: center;
-  overflow: hidden;
 }
 
 .nav-logo img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
@@ -430,8 +429,8 @@ code {
   }
 
   .nav-logo {
-    width: 126px;
-    height: 38px;
+    width: 174px;
+    height: 54px;
     justify-self: center;
   }
 
