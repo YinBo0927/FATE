@@ -56,21 +56,12 @@ ASR, BRR, and HCR are lower-is-better. All other metrics are higher-is-better.
 
 ![Iterative self-evolution curves](assets/results_evolution.png)
 
-### External Generalization and Ablation
+### External Generalization
 
 | Model | ATBench-C Acc. | ATBench-C Prec. | ATBench-C Rec. | ATBench-C F1 | ATBench-F R.S. | ATBench-F F.M. | ATBench-F R.H. |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | AgentDoG-Qwen3-4B | 64.0 | 59.2 | 88.9 | 71.1 | 46.8 | 16.5 | 40.6 |
 | Qwen3-8B-Instruct + FATE | **77.8** | **80.5** | 78.6 | **79.5** | **49.2** | **18.4** | **43.1** |
-
-| Variant | AgentDojo ASR | AgentDojo TSR | AgentHarm HCR | AgentHarm VRR |
-| --- | ---: | ---: | ---: | ---: |
-| w/o verifier re-scoring | 0.621 | 0.281 | 0.281 | 0.625 |
-| w/o over-refusal objective | 0.558 | 0.302 | 0.156 | 0.734 |
-| w/o Pareto-front selection | 0.586 | 0.332 | 0.203 | 0.719 |
-| w/o PFPO | 0.572 | 0.361 | 0.172 | 0.750 |
-| SFT + safety-only GRPO | 0.552 | 0.286 | 0.141 | 0.703 |
-| FATE | **0.540** | **0.392** | **0.125** | **0.812** |
 
 ## Installation
 
