@@ -78,24 +78,24 @@ body {
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: 0;
-  max-width: 980px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0;
+  text-align: left;
 }
 
-.title-logo {
-  display: block;
-  width: min(420px, 84%);
-  margin: 0 auto 0.85rem;
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.25rem;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
-.paper-name {
-  margin: 0 0 0.2rem;
-  color: var(--accent-red);
-  font-family: "Google Sans", "Noto Sans", sans-serif;
-  font-size: 2.25rem;
-  font-weight: 800;
-  line-height: 1;
+.paper-title-icon {
+  flex: 0 0 auto;
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
 }
 
 .publication-header {
@@ -108,7 +108,7 @@ body {
 
 .publication-authors {
   color: var(--text-primary);
-  margin-top: 0.55rem;
+  margin-top: 1rem;
 }
 
 .author-block {
@@ -119,6 +119,10 @@ body {
 .publication-authors a,
 .author-name {
   color: #2f80ed;
+}
+
+.author-name:hover {
+  color: var(--accent-red);
 }
 
 .eql-cntrb {
@@ -436,15 +440,18 @@ code {
   }
 
   .publication-title {
-    font-size: 2.25rem;
+    font-size: 2rem;
+    text-align: left;
   }
 
-  .title-logo {
-    width: min(360px, 94%);
+  .title-row {
+    flex-direction: row;
+    gap: 0.7rem;
   }
 
-  .paper-name {
-    font-size: 1.9rem;
+  .paper-title-icon {
+    width: 76px;
+    height: 76px;
   }
 
   .eql-cntrb {
