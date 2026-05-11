@@ -15,7 +15,3 @@ artifacts/**
 results/**
 checkpoints/**
 wandb/
-
-!data/README.md
-!artifacts/README.md
-!results/README.md
