@@ -119,9 +119,27 @@ The commands below show one AgentDojo replay round. AgentHarm follows the same f
 python FATE_main_Prepare.py --datasets agentdojo
 ```
 
-2. Run the current policy on the AgentDojo dev split with the official AgentDojo runner and verifier. Save normalized scored rollouts to `artifacts/round_0/dev_rollouts.scored.jsonl`.
+2. Run the current policy with the official AgentDojo benchmark runner.
 
-Each row should contain the AgentDojo task, serialized failed trajectory, task mode, verifier scores, and metadata:
+```bash
+python -m agentdojo.scripts.benchmark \
+  --model local \
+  --model-id Qwen/Qwen3-8B-Instruct \
+  --attack tool_knowledge \
+  --logdir artifacts/agentdojo_runs \
+  --force-rerun
+```
+
+Use `--suite` and `--user-task` to restrict this command to a fixed dev split, for example `--suite workspace --user-task user_task_0 --user-task user_task_1`. Then normalize the AgentDojo trace logs into the FATE rollout schema:
+
+```bash
+python scripts/normalize_agentdojo_rollouts.py \
+  --logdir artifacts/agentdojo_runs \
+  --output artifacts/round_0/dev_rollouts.scored.jsonl \
+  --split dev
+```
+
+The normalized file contains one JSONL record per AgentDojo rollout:
 
 ```json
 {"failure_id":"agentdojo-dev-0001","task":"...","failed_trajectory":"...","mode":"attacked_legitimate","scores":{"security":0.0,"utility":1.0,"over_refusal":1.0,"trajectory_control":0.0},"metadata":{"benchmark":"agentdojo","split":"dev"}}
