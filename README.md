@@ -111,15 +111,15 @@ export PYTHONPATH=$PWD/src:${PYTHONPATH:-}
 
 ## Run
 
-The commands below show one AgentDojo replay round. AgentHarm follows the same flow with `metadata.benchmark` set to `agentharm` and task modes set for harmful-request evaluation.
+The commands below build one replay round from AgentDojo and AgentHarm.
 
-1. Download AgentDojo assets and create output folders.
+1. Download AgentDojo and AgentHarm assets, then create output folders.
 
 ```bash
-python FATE_main_Prepare.py --datasets agentdojo
+python FATE_main_Prepare.py --datasets agentdojo agentharm
 ```
 
-2. Run the current policy with the official AgentDojo benchmark runner.
+2. Run the current policy with the official AgentDojo benchmark runner, then normalize its trace logs.
 
 ```bash
 python -m agentdojo.scripts.benchmark \
@@ -130,22 +130,47 @@ python -m agentdojo.scripts.benchmark \
   --force-rerun
 ```
 
-Use `--suite` and `--user-task` to restrict this command to a fixed dev split, for example `--suite workspace --user-task user_task_0 --user-task user_task_1`. Then normalize the AgentDojo trace logs into the FATE rollout schema:
+Use `--suite` and `--user-task` to restrict this command to a fixed dev split, for example `--suite workspace --user-task user_task_0 --user-task user_task_1`.
 
 ```bash
 python scripts/normalize_agentdojo_rollouts.py \
   --logdir artifacts/agentdojo_runs \
-  --output artifacts/round_0/dev_rollouts.scored.jsonl \
+  --output artifacts/round_0/agentdojo_dev_rollouts.scored.jsonl \
   --split dev
 ```
 
-The normalized file contains one JSONL record per AgentDojo rollout:
+3. Run AgentHarm on the validation split with Inspect Evals, then normalize its Inspect logs.
+
+```bash
+inspect eval inspect_evals/agentharm \
+  --model hf/Qwen/Qwen3-8B-Instruct \
+  --log-dir artifacts/agentharm_runs \
+  -T split=val
+```
+
+```bash
+python scripts/normalize_agentharm_rollouts.py \
+  --logdir artifacts/agentharm_runs \
+  --output artifacts/round_0/agentharm_dev_rollouts.scored.jsonl \
+  --split val \
+  --mode harmful_request
+```
+
+4. Merge the normalized benchmark rollouts into the replay-builder input.
+
+```bash
+python scripts/merge_jsonl.py \
+  --inputs artifacts/round_0/agentdojo_dev_rollouts.scored.jsonl artifacts/round_0/agentharm_dev_rollouts.scored.jsonl \
+  --output artifacts/round_0/dev_rollouts.scored.jsonl
+```
+
+Each normalized row uses the same FATE rollout schema:
 
 ```json
 {"failure_id":"agentdojo-dev-0001","task":"...","failed_trajectory":"...","mode":"attacked_legitimate","scores":{"security":0.0,"utility":1.0,"over_refusal":1.0,"trajectory_control":0.0},"metadata":{"benchmark":"agentdojo","split":"dev"}}
 ```
 
-3. Build AgentDojo failure prompts and generate same-policy repair candidates.
+5. Build failure prompts and generate same-policy repair candidates.
 
 ```bash
 python FATE_main_BuildReplay.py
@@ -153,13 +178,13 @@ python FATE_main_BuildReplay.py
 
 This writes `artifacts/round_0/repair_candidates.unverified.jsonl` and stops before replay construction.
 
-4. Re-execute or score each generated repair with the AgentDojo verifier. Save the scored candidates to `artifacts/round_0/repair_candidates.verified.jsonl`, then rerun replay construction.
+6. Re-execute or score each generated repair with the corresponding benchmark verifier. Save the scored candidates to `artifacts/round_0/repair_candidates.verified.jsonl`, then rerun replay construction.
 
 ```bash
 python FATE_main_BuildReplay.py
 ```
 
-5. Train SFT on the selected AgentDojo repair replay, then sample PFPO candidate groups.
+7. Train SFT on the selected repair replay, then sample PFPO candidate groups.
 
 ```bash
 python FATE_main_Train.py
@@ -167,16 +192,10 @@ python FATE_main_Train.py
 
 This writes `artifacts/round_0/pfpo_groups.unscored.jsonl` and stops before PFPO.
 
-6. Score the PFPO candidate groups with the AgentDojo verifier. Save the scored groups to `artifacts/round_0/pfpo_groups.verified.jsonl`, then rerun training.
+8. Score the PFPO candidate groups with the corresponding benchmark verifier. Save the scored groups to `artifacts/round_0/pfpo_groups.verified.jsonl`, then rerun training.
 
 ```bash
 python FATE_main_Train.py
-```
-
-7. Export ATBench for external trajectory-safety evaluation.
-
-```bash
-python FATE_main_ATBench.py
 ```
 
 See [docs/reproduction.md](docs/reproduction.md) for JSONL schemas.

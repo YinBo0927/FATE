@@ -2,6 +2,7 @@ accelerate>=0.33
 agentdojo>=0.1.35
 datasets>=2.20
 huggingface_hub>=0.24
+inspect-evals>=0.3.0
 numpy>=1.26
 pandas>=2.2
 peft>=0.12
@@ -13,6 +14,3 @@ torch>=2.3
 tqdm>=4.66
 transformers>=4.44
 trl>=0.9
-
-# Optional AgentHarm/Inspect benchmark runner. Keep commented if installation fails on your platform.
-# inspect_ai==0.3.25
