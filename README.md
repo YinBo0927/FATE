@@ -117,23 +117,17 @@ export PYTHONPATH=$PWD/src:${PYTHONPATH:-}
 python FATE_main_Prepare.py
 ```
 
-2. Run benchmark rollouts on the dev split and save verifier-scored failures.
+2. Create verifier-scored dev rollouts with the official benchmark runners and verifiers. Expected output: `artifacts/round_0/dev_rollouts.scored.jsonl`.
 
-```text
-artifacts/round_0/dev_rollouts.scored.jsonl
-```
-
-3. Generate repair candidates from failed trajectories.
+3. Build failure prompts and generate repair candidates from failed trajectories.
 
 ```bash
 python FATE_main_BuildReplay.py
 ```
 
-4. Score the generated repair candidates with benchmark verifiers, save the file below, then rerun replay construction.
+The first run writes `artifacts/round_0/repair_candidates.unverified.jsonl` and stops until verifier scores are added.
 
-```text
-artifacts/round_0/repair_candidates.verified.jsonl
-```
+4. Score the generated repair candidates with benchmark verifiers. Expected output: `artifacts/round_0/repair_candidates.verified.jsonl`. Then rerun replay construction.
 
 ```bash
 python FATE_main_BuildReplay.py
@@ -145,11 +139,9 @@ python FATE_main_BuildReplay.py
 python FATE_main_Train.py
 ```
 
-6. Score PFPO candidate groups with benchmark verifiers, save the file below, then rerun training.
+The first run writes `artifacts/round_0/pfpo_groups.unscored.jsonl` and stops until verifier scores are added.
 
-```text
-artifacts/round_0/pfpo_groups.verified.jsonl
-```
+6. Score PFPO candidate groups with benchmark verifiers. Expected output: `artifacts/round_0/pfpo_groups.verified.jsonl`. Then rerun training.
 
 ```bash
 python FATE_main_Train.py
