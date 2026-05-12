@@ -111,37 +111,45 @@ export PYTHONPATH=$PWD/src:${PYTHONPATH:-}
 
 ## Run
 
-1. Download the benchmark assets and create output folders.
+The commands below show one AgentDojo replay round. AgentHarm follows the same flow with `metadata.benchmark` set to `agentharm` and task modes set for harmful-request evaluation.
+
+1. Download AgentDojo assets and create output folders.
 
 ```bash
-python FATE_main_Prepare.py
+python FATE_main_Prepare.py --datasets agentdojo
 ```
 
-2. Create verifier-scored dev rollouts with the official benchmark runners and verifiers. Expected output: `artifacts/round_0/dev_rollouts.scored.jsonl`.
+2. Run the current policy on the AgentDojo dev split with the official AgentDojo runner and verifier. Save normalized scored rollouts to `artifacts/round_0/dev_rollouts.scored.jsonl`.
 
-3. Build failure prompts and generate repair candidates from failed trajectories.
+Each row should contain the AgentDojo task, serialized failed trajectory, task mode, verifier scores, and metadata:
+
+```json
+{"failure_id":"agentdojo-dev-0001","task":"...","failed_trajectory":"...","mode":"attacked_legitimate","scores":{"security":0.0,"utility":1.0,"over_refusal":1.0,"trajectory_control":0.0},"metadata":{"benchmark":"agentdojo","split":"dev"}}
+```
+
+3. Build AgentDojo failure prompts and generate same-policy repair candidates.
 
 ```bash
 python FATE_main_BuildReplay.py
 ```
 
-The first run writes `artifacts/round_0/repair_candidates.unverified.jsonl` and stops until verifier scores are added.
+This writes `artifacts/round_0/repair_candidates.unverified.jsonl` and stops before replay construction.
 
-4. Score the generated repair candidates with benchmark verifiers. Expected output: `artifacts/round_0/repair_candidates.verified.jsonl`. Then rerun replay construction.
+4. Re-execute or score each generated repair with the AgentDojo verifier. Save the scored candidates to `artifacts/round_0/repair_candidates.verified.jsonl`, then rerun replay construction.
 
 ```bash
 python FATE_main_BuildReplay.py
 ```
 
-5. Train the SFT model and sample PFPO candidate groups.
+5. Train SFT on the selected AgentDojo repair replay, then sample PFPO candidate groups.
 
 ```bash
 python FATE_main_Train.py
 ```
 
-The first run writes `artifacts/round_0/pfpo_groups.unscored.jsonl` and stops until verifier scores are added.
+This writes `artifacts/round_0/pfpo_groups.unscored.jsonl` and stops before PFPO.
 
-6. Score PFPO candidate groups with benchmark verifiers. Expected output: `artifacts/round_0/pfpo_groups.verified.jsonl`. Then rerun training.
+6. Score the PFPO candidate groups with the AgentDojo verifier. Save the scored groups to `artifacts/round_0/pfpo_groups.verified.jsonl`, then rerun training.
 
 ```bash
 python FATE_main_Train.py
