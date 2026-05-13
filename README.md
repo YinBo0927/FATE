@@ -2,8 +2,8 @@
 <h1><a href="#" target="_blank">On-Policy Self-Evolution via Failure Trajectories for Agentic Safety Alignment</a></h1>
 
 <div>
-<a target="_blank" href="#">
-  <img src="https://img.shields.io/badge/arXiv-coming_soon-b31b1b.svg" alt="arXiv Paper"/>
+<a target="_blank" href="https://arxiv.org/abs/2605.11882">
+  <img src="https://img.shields.io/badge/arXiv-2605.11882-b31b1b.svg" alt="arXiv Paper"/>
 </a>
 <a target="_blank" href="https://yinbo0927.github.io/FATE/">
   <img src="https://img.shields.io/badge/Project-Page-2f80ed.svg" alt="Project Page"/>
@@ -205,10 +205,13 @@ See [docs/reproduction.md](docs/reproduction.md) for JSONL schemas.
 If you find this work interesting or helpful, please cite:
 
 ```bibtex
-@article{yin2026fate,
-  title={On-Policy Self-Evolution via Failure Trajectories for Agentic Safety Alignment},
-  author={Yin, Bo and Li, Qi and Wang, Xinchao},
-  journal={arXiv preprint arXiv:coming soon},
-  year={2026}
+@misc{yin2026onpolicyselfevolutionfailuretrajectories,
+      title={On-Policy Self-Evolution via Failure Trajectories for Agentic Safety Alignment}, 
+      author={Bo Yin and Qi Li and Xinchao Wang},
+      year={2026},
+      eprint={2605.11882},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2605.11882}, 
 }
 ```
