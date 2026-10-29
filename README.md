@@ -1,3 +1,5 @@
+
+
 <div align="center">
 <h1><a href="#" target="_blank">On-Policy Self-Evolution via Failure Trajectories for Agentic Safety Alignment</a></h1>
 
@@ -74,6 +76,8 @@ HCR is lower-is-better. VRR and SafeScore are higher-is-better.
 ![Iterative self-evolution curves](assets/results_evolution.png)
 
 ### ATBench External Generalization
+
+Export the ATBench test split with `python FATE_main_ATBench.py`.
 
 | Category | Model | ATBench-C Acc. ↑ | ATBench-C Prec. ↑ | ATBench-C Rec. ↑ | ATBench-C F1 ↑ | ATBench-F R.S. ↑ | ATBench-F F.M. ↑ | ATBench-F R.H. ↑ |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
